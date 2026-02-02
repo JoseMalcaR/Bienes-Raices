@@ -114,7 +114,7 @@
 
         if ($resultado) {
             //Redireccionar al usuario
-            header('Location: /admin');
+            header('Location: /admin/index.php?resultado=1');
         }   
         }
 
