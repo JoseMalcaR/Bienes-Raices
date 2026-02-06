@@ -1,41 +1,63 @@
 <?php 
 
-    require 'includes/funciones.php';
+    $id = $_GET['id'];
+    $id = filter_var($id, FILTER_VALIDATE_INT);
 
+    if(!$id) {
+        header('Location: /');
+    }
+
+    //Importar la conexión
+
+    require 'includes/config/database.php';
+    $db = conectarDB();
+
+    //Consultar
+    $query = "SELECT * FROM propiedades WHERE id = $id";
     
+    //Obtener los resultados
+    $resultado = mysqli_query($db, $query);
+
+    if(!$resultado->num_rows) {
+        header('Location: /');
+    }
+
+
+    $propiedad = mysqli_fetch_assoc($resultado);
+
+    require 'includes/funciones.php';
     incluirTemplate('header');
 ?>
 
     <main class="contenedor seccion contenido-centrado">
-        <h1>Casa en Venta frente al bosque</h1>
-        
-        <picture>
-            <source srcset="build/img/anuncio1.webp" type="image/webp">
-            <source srcset="build/img/anuncio1.jpg" type="image/jpg">
-            <img src="build/img/destacada.jpg" alt="imagen de la propiedad" loading="lazy"> 
-        </picture>
+        <h1><?php echo $propiedad['titulo']; ?></h1>
+
+        <img src="imagenes/<?php echo $propiedad['imagen']; ?>" alt="Imagen de <?php echo $propiedad['titulo']; ?>">
 
         <div class="resumen-propiedad">
-            <p class="precio">$3,000,000</p>
-                    <ul class="iconos-caracteristicas">
-                        <li>
-                            <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_wc.svg">
-                            <p>3</p>
-                        </li>
-                        <li>
-                            <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_estacionamiento.svg">
-                            <p>3</p>
-                        </li>
-                        <li>
-                            <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_dormitorio.svg">
-                            <p>4</p>
-                        </li>
-
-                    </ul>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p class="precio">$<?php echo number_format($propiedad['precio']); ?></p>
+            <ul class="iconos-caracteristicas">
+                <li>
+                    <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_wc.svg">
+                    <p><?php echo $propiedad['wc']; ?></p>
+                </li>
+                <li>
+                    <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_estacionamiento.svg">
+                    <p><?php echo $propiedad['estacionamiento']; ?></p>
+                </li>
+                <li>
+                    <img class="icono" loading="lazy" alt="build/img/icono_wc.svg" src="build/img/icono_dormitorio.svg">
+                    <p><?php echo $propiedad['habitaciones']; ?></p>
+                </li>
+            </ul>
+            <div class="descripcion-propiedad">
+                <p>
+                    <?php echo $propiedad['descripcion']; ?>
+                </p>
         </div>
+
     </main>
 <?php
+    mysqli_close($db);
   incluirTemplate('footer');
 ?>
