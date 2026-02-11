@@ -8,7 +8,7 @@ if ($env === false) {
     die('Error: No se pudo cargar el archivo .env');
 }
 
-$db = mysqli_connect(
+$db = new mysqli(
     $env['DB_HOST'],
     $env['DB_USER'],
     $env['DB_PASS'],

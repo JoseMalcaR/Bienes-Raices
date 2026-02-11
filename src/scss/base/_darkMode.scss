@@ -44,4 +44,15 @@
         }
     }
 
+    table.propiedades {
+        tbody {
+            background-color: $grisOscuro;
+            
+            td {
+                color: $blanco;
+                border-bottom: 1px solid darken($grisOscuro, 5%);
+            }
+        }
+    }
+
 }
