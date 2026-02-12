@@ -3,7 +3,7 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCIONES_URL', __DIR__ . '/funciones.php');
-define('CARPETA_IMAGENES', __DIR__ . '/../public/imagenes/');
+define('CARPETA_IMAGENES', $_SERVER['DOCUMENT_ROOT'] . '/imagenes/');
 
 
 function incluirTemplate( $nombre, $inicio = false ) {
@@ -26,4 +26,10 @@ function debuguear($variable) {
     var_dump($variable);
     echo "</pre>";
     exit;
+}
+
+// Escapa/Sanitizar el HTML
+function s($html) : string {
+    $s = htmlspecialchars($html);
+    return $s;
 }
