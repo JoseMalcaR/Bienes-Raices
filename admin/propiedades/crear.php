@@ -4,25 +4,17 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use App\Vendedor;
     use Intervention\Image\Drivers\Gd\Driver;
     use Intervention\Image\ImageManager;
 
 
     estaAutenticado();
 
-
-    //Base de datos
-    $db = conectarDB();
-
     $propiedad = new Propiedad();
 
     //Consultar para obtener los vendedores
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db, $consulta);
-    $vendedores = [];
-    while($row = mysqli_fetch_assoc($resultado)) {
-        $vendedores[] = (object) $row;
-    }
+    $vendedores = Vendedor::all();
 
     //Arreglo con mensajes de errores
     $errores = Propiedad::getErrores();
@@ -60,13 +52,7 @@
             $imagen->save(CARPETA_IMAGENES . "/" . $nombreImagen);
         }
 
-
         $resultado = $propiedad->guardar();  
-        if ($resultado) {
-            //Redireccionar al usuario
-            header('Location: /admin/index.php?resultado=1');
-            exit;
-        }   
         }
 
  

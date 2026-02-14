@@ -44,6 +44,34 @@ table.propiedades {
     }
 }
 
+table.vendedores {
+    margin-top: 4rem;
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+        background-color: $verde;
+        
+        th{
+            color: $blanco;
+            padding: 2rem;
+            text-align: center;
+        }
+    }
+
+    tbody {
+        td {
+            padding: 2rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+
+    .imagen-tabla {
+        width: 10rem;
+    }
+}
+
 .imagen-small {
     width: 20rem;
 }

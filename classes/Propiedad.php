@@ -1,35 +1,24 @@
-<?php
+<?php   
 
 namespace App;
 
-class Propiedad {
-
-    //Base de datos
-    protected static $db;
-    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
-    
-    // Errores
-    protected static $errores = [];
+class Propiedad extends ActiveRecord {
+        protected static $tabla = 'propiedades';
+        protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedores_id'];
 
     
-    
-    public $id;
-    public $titulo;
-    public $precio;
-    public $imagen;
-    public $descripcion;
-    public $habitaciones;
-    public $wc;
-    public $estacionamiento;
-    public $creado;
-    public $vendedores_id;
+        public $id;
+        public $titulo;
+        public $precio;
+        public $imagen;
+        public $descripcion;
+        public $habitaciones;
+        public $wc;
+        public $estacionamiento;
+        public $creado;
+        public $vendedores_id;
 
-        //Definir la conexion a la base de datos
-    public static function setDB($database) {
-        self::$db = $database;
-    }
-
-    public function __construct($args = []) {
+        public function __construct($args = []) {
 
         $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
@@ -41,88 +30,8 @@ class Propiedad {
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
         $this->vendedores_id = $args['vendedores_id'] ?? "";
-    }
-
-    public function guardar() {
-        if(isset($this->id)) {
-            //Actualizar
-            $this->actualizar();
-        } else {
-            //Creando un nuevo registro
-            $this->crear();
-        }
-    }
-
-    public function crear() {
-
-        // Sanitizar los datos que vienen del usuario
-
-        $atributos = $this->sanitizarAtributos();
-
-        // Insertar en la base de datos
-        $query = "INSERT INTO propiedades ( ";
-        $query .= join(', ', array_keys($atributos));
-        $query .= " ) VALUES (' ";
-        $query .= join("', '", array_values($atributos));
-        $query .= " ') ";
-
-        $resultado = self::$db->query($query);
-        
-        return $resultado;
-    }
-
-    public function actualizar() {
-
-        // Sanitizar los datos que vienen del usuario
-
-        $atributos = $this->sanitizarAtributos();
-
-        $valores = [];
-        foreach($atributos as $key => $value) {
-            $valores[] = "{$key}='{$value}'";
         }
 
-        // Insertar en la base de datos
-        $query = "UPDATE propiedades SET ";
-        $query .= join(', ', $valores);
-        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
-        $query .= " LIMIT 1 ";
-
-        $resultado = self::$db->query($query);
-        
-        if($resultado) {
-            header('Location: /admin/index.php?resultado=2');
-            exit;
-        }
-    }
-
-    // Identificar y unir los atributos de la base de datos
-    public function atributos() {
-        $atributos = [];
-        foreach(self::$columnasDB as $columna) {
-            if($columna === 'id') continue;
-            $atributos[$columna] = $this->$columna;
-        }
-        return $atributos;
-    }
-
-    public function sanitizarAtributos() {
-        $atributos = $this->atributos();
-        $sanitizado = [];
-        //debuguear($atributos);
-
-        foreach($atributos as $key => $value) {
-            $sanitizado[$key] = self::$db->real_escape_string($value);
-        }
-
-        return $sanitizado;
-    }
-
-    // Validación
-        public static function getErrores() {
-            return self::$errores;
-        }
-    
         public function validar() {
     
             if(!$this->titulo) {
@@ -155,77 +64,5 @@ class Propiedad {
     
             return self::$errores;
         }
-
-        public function setImagen($imagen) {
-            //Elimina la imagen previa
-            if(isset($this->id)) {
-                //Comprobar si existe el archivo
-                $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
-                if($existeArchivo) {
-                    unlink(CARPETA_IMAGENES . $this->imagen);
-                }
-            }
-            // Asignar el nombre de la imagen
-            if($imagen) {
-                $this->imagen = $imagen;
-            }
-        }
-
-        //Lista todas los registros
-        public static function all() {
-            $query = "SELECT * FROM propiedades";
-            
-
-            $resultado = self::consultarSQL($query);
-
-            return $resultado;
-        }
-
-        //Busca un registro por su ID
-        public static function find($id) {
-            $query = "SELECT * FROM propiedades WHERE id = {$id}";
-
-            $resultado = self::consultarSQL($query);
-
-            return array_shift($resultado);
-        }
-
-        public static function consultarSQL($query){
-            // Consultar la base de datos
-            $resultado = self::$db->query($query);
-
-            // Iterar los resultados
-            $array = [];
-            while($registro = $resultado->fetch_assoc()) {
-                $array[] = self::crearObjeto($registro);
-            }
-
-            // Liberar la memoria
-            $resultado->free();
-
-            // Retornar los resultados
-            return $array;
-        }
-
-        protected static function crearObjeto($registro) {
-            $objeto = new self();
-
-            foreach($registro as $key => $value) {
-                if(property_exists($objeto, $key)) {
-                    $objeto->$key = $value;
-                }
-            }
-
-            return $objeto;
-        }
-
-        //Sincroniza el objeto en memoria con los cambios realizados por el usuario
-        public function sincronizar($args = []) {
-            foreach($args as $key => $value) {
-                if(property_exists($this, $key) && !is_null($value)) {
-                    $this->$key = $value;
-                }
-            }
-        }
-    
+        
 }
