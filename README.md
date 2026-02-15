@@ -48,6 +48,33 @@ Proyecto parte del curso de Desarrollo Web(Udemy).
 - ✅ Optimización de assets (imágenes, CSS, JS)
 - ✅ Estructura de proyecto organizada y escalable
 
+### Programación Orientada a Objetos (POO)
+- ✅ Implementación del patrón **Active Record**
+- ✅ Uso de **namespaces** para organizar el código
+- ✅ Creación de clase base `ActiveRecord` con funcionalidad compartida
+- ✅ **Herencia**: Clases `Propiedad` y `Vendedor` extienden de `ActiveRecord`
+- ✅ **Encapsulamiento**: Propiedades protegidas y públicas según necesidad
+- ✅ Métodos CRUD reutilizables:
+  - `crear()` - Inserta nuevos registros
+  - `actualizar()` - Actualiza registros existentes
+  - `eliminar()` - Elimina registros
+  - `guardar()` - Decide entre crear o actualizar
+  - `all()` - Obtiene todos los registros
+  - `find()` - Busca registro por ID
+- ✅ Validación de datos en cada modelo
+- ✅ Sanitización de atributos para prevenir inyección SQL
+- ✅ Manejo de errores centralizado
+- ✅ Uso de **propiedades estáticas** para configuración de BD
+- ✅ **Autoload** con Composer para carga automática de clases
+
+#### Estructura de Clases
+```
+classes/
+├── ActiveRecord.php    # Clase base con patrón Active Record
+├── Propiedad.php      # Modelo para propiedades inmobiliarias
+└── Vendedor.php       # Modelo para vendedores
+```
+
 ## ⚙️ Configuración del Proyecto
 
 1. **Clonar el repositorio**
