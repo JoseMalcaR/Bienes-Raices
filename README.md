@@ -1,5 +1,5 @@
 # Bienes-Raices
-Proyecto parte del curso de Desarrollo Web(Udemy).
+Sistema de gestión de propiedades implementado con PHP orientado a objetos.
 
 ## 🚀 Tecnologías Utilizadas
 

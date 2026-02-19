@@ -15,7 +15,7 @@ class ActiveRecord {
     public $imagen;
 
     
-
+    
     //Definir la conexion a la base de datos
     public static function setDB($database) {
         self::$db = $database;

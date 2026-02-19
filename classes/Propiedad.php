@@ -41,10 +41,15 @@ class Propiedad extends ActiveRecord {
             if(!$this->precio) {
                 self::$errores[] = "El precio es obligatorio";
             }
+
+            if(!$this->imagen) {
+                self::$errores[] = "La imagen de la propiedad es obligatoria";
+            }
     
             if(strlen($this->descripcion) < 50 ) {
                 self::$errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";
             }
+        
     
             if(!$this->habitaciones) {
                 self::$errores[] = "El numero de habitaciones es obligatorio";
